@@ -1,0 +1,8 @@
+span.cursor-pointer {
+    cursor: pointer;
+}
+
+.disabled-icons {
+    opacity: 0.5;
+    pointer-events: none;
+}

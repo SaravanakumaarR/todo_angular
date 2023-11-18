@@ -1,0 +1,50 @@
+<div class="col-md-12 border p-3">
+    <h5 class="text-secondary">{{isTodoSelectedForEdit ? 'Edit' : 'Create'}} Todo</h5>
+    <form [formGroup]="toDoForm" class="form-group my-3">
+        <label for="todo-desc">Description</label>
+        <input type="text" class="form-control shadow-none" id="todo-desc" formControlName="description"
+            placeholder="Enter todo description">
+        <div *ngIf="descControl.touched && descControl.errors?.['required'] " class="text-danger">
+            Field is required
+        </div>
+    </form>
+    <button class="btn btn-primary btn-sm-3 mx-2" (click)="saveTodo()">Save</button>
+    <button class="btn btn-secondary btn-sm-3 mx-2" (click)="toDoForm.reset();initialiseForm();">clear</button>
+    <div>
+        <table class="table table-bordered caption-top">
+            <caption>List of todo's
+                <span>
+                    <i class="bi text-success bi-check-circle px-2"></i> : Mark as done
+                    <i class="bi  text-primary bi-pencil-square px-2"></i> : Edit
+                    <i class="bi text-danger bi-trash px-2"></i> : Delete
+                </span>
+            </caption>
+            <thead>
+                <tr>
+                    <th>Activity</th>
+                    <th>Status</th>
+                    <th class="text-center min-width-150">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let todo of toDoList">
+                    <td>{{todo.description}}</td>
+                    <td>{{todo.status}}</td>
+                    <td class="text-center">
+                        <span [ngClass]="[todo.status === 'done' ? 'disabled-icons' : 'cursor-pointer text-success']" (click)="markAsDone(todo)"><i class="bi bi-check-circle px-2"></i></span>
+                        <span class="cursor-pointer text-primary"><i class="bi bi-pencil-square px-2"
+                                (click)="onEditClick(todo)"></i></span>
+                        <span class="cursor-pointer text-danger" data-bs-target="#delete-modal"
+                            data-bs-toggle="modal"><i class="bi bi-trash px-2" (click)="onDeleteClick(todo)"></i></span>
+                    </td>
+                </tr>
+                <tr *ngIf="toDoList.length === 0">
+                    <td class="text-center" colspan="3">No data found</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<app-modal-popup [modalData]="modalData" (actionEvent)="deleteTodo()"></app-modal-popup>
